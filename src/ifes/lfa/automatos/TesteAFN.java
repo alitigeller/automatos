@@ -34,9 +34,9 @@ public class TesteAFN {
         
         System.out.println(tr1ex(new HashSet<>(Arrays.asList(0)), "aabababa"));
         
-//        Set<Integer> finals = new HashSet<>(Arrays.asList(3));
-//        Set<Integer> Q = new HashSet<>(Arrays.asList(0,2,3));
-//        System.out.println(Q.removeAll(finals));
+        Set<Integer> finals = new HashSet<>(Arrays.asList(3));
+        Set<Integer> Q = new HashSet<>(Arrays.asList(0,2,3));
+        System.out.println(Q.removeAll(finals));
     }
     static Set<Integer> tr1ex(Set<Integer> Qi, String w) {
         if (w.length() == 0) {
