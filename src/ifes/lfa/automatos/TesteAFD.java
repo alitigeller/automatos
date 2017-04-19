@@ -32,7 +32,7 @@ public class TesteAFD {
         tr1.put(new Tuple(3, 'a'), 3);
         tr1.put(new Tuple(3, 'b'), 3);
         
-        System.out.println(tr1ex(7,"a"));
+        System.out.println(tr1ex(0,"a"));
 
     }
 

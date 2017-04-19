@@ -11,26 +11,29 @@ import java.util.Objects;
  *
  * @author aless
  */
-public class Tuple {
+public class Tuple{
 
-    public final Integer x;
+    public final Object x;
     public final Character y;
 
-    public Tuple(Integer x, Character y) {
+    public Tuple(Object x, Character y) {
         this.x = x;
         this.y = y;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 53 * hash + Objects.hashCode(this.x);
-        hash = 53 * hash + Objects.hashCode(this.y);
+        int hash = 7;
+        hash = 31 * hash + Objects.hashCode(this.x);
+        hash = 31 * hash + Objects.hashCode(this.y);
         return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
         if (obj == null) {
             return false;
         }
@@ -46,6 +49,9 @@ public class Tuple {
         }
         return true;
     }
+
+
+    
     
 
 }
