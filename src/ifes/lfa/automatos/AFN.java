@@ -5,7 +5,7 @@
  */
 package ifes.lfa.automatos;
 
-import static ifes.lfa.automatos.TesteAFN.tr1;
+
 import ifes.lfa.automatos.util.Tuple;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,11 +23,21 @@ import java.util.Set;
  */
 public class AFN {
 
-    public List<Integer> states;
+    public Set<Integer> states;
     Map<Tuple, Set<Integer>> tr;
     public Integer init;
     public Set<Integer> finals;
     public Set<Character> alfabeth;
+
+    public AFN(Set<Integer> states, Map<Tuple, Set<Integer>> tr, Integer init, Set<Integer> finals, Set<Character> alfabeth) {
+        this.states = states;
+        this.tr = tr;
+        this.init = init;
+        this.finals = finals;
+        this.alfabeth = alfabeth;
+    }
+    
+    
 
     public Set<Integer> trex(Set<Integer> Qi, String w) {
         if (w.length() == 0) {
@@ -49,18 +59,22 @@ public class AFN {
         return Q.removeAll(this.finals);
     }
 
-    public AFD toAFD() {
+    public Map toAFD() {
         Map<Tuple, Integer> trAFD = new HashMap();;
         Map<Tuple, Set<Integer>> trT = new LinkedHashMap();
-        int i = 0;
+        //Mudar trT para Map<Set<Integer>, Set<Integer>>. 
+        //Já tem um for pro alfabeto, trT juto com o for para simular tabela da página 73 do slide
+        //int i = 0;
         for (Character w : this.alfabeth) {
             Set<Integer> initSet = new HashSet<>(Arrays.asList(this.init));
             Tuple newKey = new Tuple(initSet, w);
             trT.put(newKey, this.tr.get(new Tuple(this.init, w)));
-            trAFD.put(new Tuple(i, w), i+1);
-            //int j = (new ArrayList<Tuple>(trT.keySet())).indexOf(newKey);
+            int j = (new ArrayList<Tuple>(trT.keySet())).indexOf(newKey);
+            trAFD.put(new Tuple(0, w), j);
+            
             //
-            i++;
+            //
+            //i++;
         }
 
         
@@ -69,17 +83,20 @@ public class AFN {
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
             Set<Integer> pairValue = (Set<Integer>) pair.getValue();
+            Tuple pairKey = (Tuple) pair.getKey();
             for (Character w : this.alfabeth) {
                 Tuple newKey = new Tuple(pairValue, w);
                 if (!trT.containsKey(newKey)) {
                     trT.put(newKey, trex(pairValue, w.toString()));
-                    trAFD.put(new Tuple(i, w), i+1);
-                    i++;
+                    int i = (new ArrayList<Tuple>(trT.keySet())).indexOf(pairKey);
+                    int j = (new ArrayList<Tuple>(trT.keySet())).indexOf(newKey);
+                    trAFD.put(new Tuple(i, w), j);
+                    
                 }
             }
             
         }
 
-        return null;
+        return trAFD;
     }
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ifes.lfa.automatos;
+package ifes.lfa.automatos.teste;
 
 import ifes.lfa.automatos.util.Tuple;
 import java.util.Arrays;
