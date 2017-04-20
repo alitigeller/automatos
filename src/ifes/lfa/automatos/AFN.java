@@ -5,7 +5,6 @@
  */
 package ifes.lfa.automatos;
 
-
 import ifes.lfa.automatos.util.Tuple;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +14,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -36,8 +36,6 @@ public class AFN {
         this.finals = finals;
         this.alfabeth = alfabeth;
     }
-    
-    
 
     public Set<Integer> trex(Set<Integer> Qi, String w) {
         if (w.length() == 0) {
@@ -47,7 +45,7 @@ public class AFN {
             String w1 = w.substring(1);
             Set<Integer> Qtmp = new HashSet<>();
             for (Integer q : Qi) {
-                Qtmp.addAll(this.tr.get(new Tuple(q, a)));
+                Qtmp.addAll(this.tr.get(new Tuple((Integer) q, a)));
             }
 
             return trex(Qtmp, w1);
@@ -61,42 +59,32 @@ public class AFN {
 
     public Map toAFD() {
         Map<Tuple, Integer> trAFD = new HashMap();;
-        Map<Tuple, Set<Integer>> trT = new LinkedHashMap();
-        //Mudar trT para Map<Set<Integer>, Set<Integer>>. 
-        //Já tem um for pro alfabeto, trT juto com o for para simular tabela da página 73 do slide
-        //int i = 0;
-        for (Character w : this.alfabeth) {
-            Set<Integer> initSet = new HashSet<>(Arrays.asList(this.init));
-            Tuple newKey = new Tuple(initSet, w);
-            trT.put(newKey, this.tr.get(new Tuple(this.init, w)));
-            int j = (new ArrayList<Tuple>(trT.keySet())).indexOf(newKey);
-            trAFD.put(new Tuple(0, w), j);
-            
-            //
-            //
-            //i++;
-        }
+        Map<Set<Integer>, Set<Tuple>> trT = new LinkedHashMap();
 
-        
+        Set<Integer> init = new HashSet<>(Arrays.asList(this.init));
+        trT.put(init, new HashSet());
+
         Iterator it = trT.entrySet().iterator();
 
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            Set<Integer> pairValue = (Set<Integer>) pair.getValue();
-            Tuple pairKey = (Tuple) pair.getKey();
+        //while (it.hasNext()) {
+        Object[] trtStates = trT.entrySet().toArray();
+        for (int i = 0; i < trtStates.length; i++) {
+            Entry pair = (Entry) trtStates[i];
+
+            Set<Tuple> pairValue = (Set<Tuple>) pair.getValue();
+            Set<Integer> pairKey = (Set<Integer>) pair.getKey();
+
             for (Character w : this.alfabeth) {
-                Tuple newKey = new Tuple(pairValue, w);
-                if (!trT.containsKey(newKey)) {
-                    trT.put(newKey, trex(pairValue, w.toString()));
-                    int i = (new ArrayList<Tuple>(trT.keySet())).indexOf(pairKey);
-                    int j = (new ArrayList<Tuple>(trT.keySet())).indexOf(newKey);
-                    trAFD.put(new Tuple(i, w), j);
-                    
+                Set<Integer> tr = trex(pairKey, w.toString());
+                pairValue.add(new Tuple(tr, w));
+                if (!trT.containsKey(tr)) {
+                    trT.put(tr, new HashSet());
+                    trtStates = trT.entrySet().toArray();
                 }
             }
-            
+
         }
 
-        return trAFD;
+        return trT;
     }
 }

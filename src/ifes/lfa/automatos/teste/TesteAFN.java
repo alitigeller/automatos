@@ -26,8 +26,8 @@ public class TesteAFN {
         tr1.put(new Tuple(0, 'a'), new HashSet<>(Arrays.asList(0, 1)));
         tr1.put(new Tuple(0, 'b'), new HashSet<>(Arrays.asList(0, 2)));
         tr1.put(new Tuple(1, 'a'), new HashSet<>(Arrays.asList(3)));
-        tr1.put(new Tuple(1, 'b'), new HashSet<>(Arrays.asList()));
-        tr1.put(new Tuple(2, 'a'), new HashSet<>(Arrays.asList()));
+        tr1.put(new Tuple(1, 'b'), new HashSet<Integer>());
+        tr1.put(new Tuple(2, 'a'), new HashSet<Integer>());
         tr1.put(new Tuple(2, 'b'), new HashSet<>(Arrays.asList(3)));
         tr1.put(new Tuple(3, 'a'), new HashSet<>(Arrays.asList(3)));
         tr1.put(new Tuple(3, 'b'), new HashSet<>(Arrays.asList(3)));

@@ -50,6 +50,11 @@ public class Tuple{
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Tuple{" + "x=" + x + ", y=" + y + '}';
+    }
+
 
     
     
